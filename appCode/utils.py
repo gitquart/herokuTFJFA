@@ -46,7 +46,7 @@ def processRows(browser,row,strSearch):
             time.sleep(20)
             #The file is downloaded rare, then just renaming it solves the issue
             for file in os.listdir(download_dir):
-                os.rename(download_dir+'\\'+file,download_dir+'\\00000.pdf')
+                os.rename(download_dir+'/'+file,download_dir+'/00000.pdf')
 
     
        
