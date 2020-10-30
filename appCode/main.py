@@ -71,14 +71,11 @@ if status == 200:
     browser.get(url)
     time.sleep(3)
     # class names for li: rtsLI rtsLast
-    btnBuscar = browser.find_elements_by_xpath(
-        "//*[@id='formBusqueda:btnBuscar']")[0].click()
+    btnBuscar = browser.find_elements_by_xpath("//*[@id='formBusqueda:btnBuscar']")[0].click()
     time.sleep(6)
     strSearch = " "
-    txtBuscar = browser.find_elements(
-        By.XPATH, "//*[@id='formBusqueda:textToSearch']")[0].send_keys(strSearch)
-    btnBuscaTema = browser.find_elements(
-        By.XPATH, '//*[@id="formBusqueda:btnBuscar"]')[0].click()
+    txtBuscar = browser.find_elements(By.XPATH, "//*[@id='formBusqueda:textToSearch']")[0].send_keys(strSearch)
+    btnBuscaTema = browser.find_elements(By.XPATH, '//*[@id="formBusqueda:btnBuscar"]')[0].click()
     # WAit X secs until query is loaded.
     time.sleep(10)
     print('Start reading the page...')
@@ -98,8 +95,7 @@ if status == 200:
         startPage = control_page
         bd.updatePage(topic, control_page)
         # Change the page with next
-        btnnext = browser.find_elements_by_xpath(
-            '//*[@id="dtRresul_paginator_top"]/span[4]')[0].click()
+        btnnext = browser.find_elements_by_xpath('//*[@id="dtRresul_paginator_top"]/span[4]')[0].click()
         time.sleep(5)
 
 
