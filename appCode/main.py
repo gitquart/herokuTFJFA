@@ -82,6 +82,7 @@ if status == 200:
     if startPage>1:
         for x in range(1,startPage):
             btnNext=browser.find_elements_by_xpath("//*[@id='dtRresul_paginator_top']/span[4]")[0].click()
+            time.sleep(5)
     print('Start reading the page...')
     # Control the page
     # Page identention
