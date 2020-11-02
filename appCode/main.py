@@ -78,6 +78,10 @@ if status == 200:
     btnBuscaTema = browser.find_elements(By.XPATH, '//*[@id="formBusqueda:btnBuscar"]')[0].click()
     # WAit X secs until query is loaded.
     time.sleep(10)
+    #Mechanism to change to current page
+    if startPage>1:
+        for x in range(1,startPage):
+            btnNext=browser.find_elements_by_xpath("//*[@id='dtRresul_paginator_top']/span[4]")[0].click()
     print('Start reading the page...')
     # Control the page
     # Page identention
@@ -91,12 +95,11 @@ if status == 200:
         print('Count of Rows:', str(countRow))
         # Update the info in file
         print('Page already done:...', str(startPage))
-        control_page = int(startPage)+1
-        startPage = control_page
-        bd.updatePage(topic, control_page)
-        # Change the page with next
-        btnnext = browser.find_elements_by_xpath('//*[@id="dtRresul_paginator_top"]/span[4]')[0].click()
-        time.sleep(5)
+        currentPage=int(browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-pages > span.ui-paginator-page.ui-state-default.ui-corner-all.ui-state-active')[0].text) 
+        bd.updatePage(topic,currentPage+1)
+        #Change the page with next
+        btnNext=browser.find_elements_by_xpath("//*[@id='dtRresul_paginator_top']/span[4]")[0].click()
+        time.sleep(5) 
 
 
 browser.quit()
