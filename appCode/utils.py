@@ -75,21 +75,20 @@ def processRows(browser,row,strSearch):
     json_sentencia['publication_datetime']=fullTimeStamp
     json_sentencia['strpublicationdatetime']=fullTimeStamp
     #Check if a pdf exists                       
-    json_sentencia['lspdfcontent'].clear()
+    json_sentencia['pdfcontent']=""
                   
-    lsContent=[]  
+    strContent=''  
     for file in os.listdir(download_dir):
         pdfDownloaded=True
         strFile=file.split('.')[1]
         if strFile=='PDF' or strFile=='pdf':
-            lsContent=readPDF(file)        
+            strContent=readPDF(file)        
 
     #When pdf is done and the record is in cassandra, delete all files in download folder
     #If the pdf is not downloaded but the window is open, save the data without pdf
     if pdfDownloaded==True:
         for file in os.listdir(download_dir):
-            for item in lsContent:
-                json_sentencia['lspdfcontent'].append(item)
+            json_sentencia['pdfcontent']=strContent
             for file in os.listdir(download_dir):
                 os.remove(download_dir+'/'+file) 
 
@@ -103,13 +102,11 @@ def processRows(browser,row,strSearch):
 """
 readPDF is done to read a PDF no matter the content, can be image or UTF-8 text
 """
-def readPDF(file):
-    lsContent=[]
+def readPDF(file):  
     with open(download_dir+'/'+file, "rb") as imageFile:
         bContent = base64.b64encode(imageFile.read()).decode('utf-8')
-    
-    lsContent.append(bContent)
-    return lsContent   
+     
+    return bContent  
     
                   
 
