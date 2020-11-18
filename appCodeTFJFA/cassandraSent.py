@@ -16,7 +16,7 @@ def cassandraBDProcess(json_sentencia):
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=70
@@ -58,7 +58,7 @@ def updatePage(page):
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=70
@@ -77,7 +77,7 @@ def getPageAndTopic():
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=70
