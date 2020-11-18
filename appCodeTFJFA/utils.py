@@ -9,7 +9,7 @@ import json
 import os
 import sys
 
-download_dir = '/app/Download/'
+download_dir = '/app/DownloadTFJFA'
 
 def appendInfoToFile(path,filename,strcontent):
     txtFile=open(path+filename,'a+')
