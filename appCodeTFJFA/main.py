@@ -23,7 +23,7 @@ print('Current path:', pathToHere)
 
 options = webdriver.ChromeOptions()
 
-download_dir = '/app/Download'
+download_dir = '/app/DownloadTFJFA'
 
 profile = {"plugins.plugins_list": [{"enabled": False, "name": "Chrome PDF Viewer"}],  # Disable Chrome's PDF Viewer
            "download.default_directory": download_dir,

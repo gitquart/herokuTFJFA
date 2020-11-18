@@ -143,6 +143,6 @@ class CassandraConnection():
     cc_pwd='P@ssw0rd33'
     cc_user_test='test'
     cc_pwd_test='testquart'
-    cc_secureBundle='/app/appcode/secure-connect-dbquart.zip'
+    cc_secureBundle='/app/appCodeTFJFA/secure-connect-dbquart.zip'
         
 

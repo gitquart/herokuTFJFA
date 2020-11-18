@@ -51,7 +51,7 @@ def processRows(browser,row,strSearch):
 
   
     #Build the json by row            
-    json_sentencia=devuelveJSON('/app/appcode/json_sentencia.json')
+    json_sentencia=devuelveJSON('/app/appCodeTFJFA/json_sentencia.json')
     json_sentencia['id']=str(uuid.uuid4())
     json_sentencia['court_room']=court
     json_sentencia['pdfname']=namePDF
@@ -140,7 +140,7 @@ def processPDF(json_sentencia,lsRes):
             strContent=readPDF(file) 
             print('Start wrapping text...') 
             lsContent=wrap(strContent,1000)  
-            json_documento=devuelveJSON('/app/appcode/json_documento.json')
+            json_documento=devuelveJSON('/app/appCodeTFJFA/json_documento.json')
             if lsRes[0]:
                 json_documento['idDocumento']=json_sentencia['id']
             else:
