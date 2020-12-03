@@ -4,7 +4,7 @@ from cassandra.auth import PlainTextAuthProvider
 from cassandra.query import SimpleStatement
 import os
 
-keyspace='thesis'
+keyspace='test'
 timeOut=1000              
 def cassandraBDProcess(json_sentencia):
      
@@ -40,7 +40,7 @@ def cassandraBDProcess(json_sentencia):
     else:        
         #Insert Data as JSON
         jsonS=json.dumps(json_sentencia)           
-        insertSt="INSERT INTO thesis.tbcourtdecisiontfjfa JSON '"+jsonS+"';" 
+        insertSt="INSERT INTO test.tbcourtdecisiontfjfa JSON '"+jsonS+"';" 
         future = session.execute_async(insertSt)
         future.result()  
         sent_added=True
@@ -119,7 +119,7 @@ def insertPDF(json_doc):
     documento=str(json_doc['documento'])
     fuente=str(json_doc['fuente'])
     secuencia=str(json_doc['secuencia'])
-    querySt="select id from thesis.tbDocumento_tfjfa where iddocumento="+iddocumento+" and documento='"+documento+"' and fuente='"+fuente+"' AND secuencia="+secuencia+"  ALLOW FILTERING"          
+    querySt="select id from test.tbDocumento_tfjfa where iddocumento="+iddocumento+" and documento='"+documento+"' and fuente='"+fuente+"' AND secuencia="+secuencia+"  ALLOW FILTERING"          
     future = session.execute_async(querySt)
     row=future.result()
 
@@ -127,7 +127,7 @@ def insertPDF(json_doc):
         cluster.shutdown()
     else:    
         jsonS=json.dumps(json_doc)           
-        insertSt="INSERT INTO thesis.tbDocumento_tfjfa JSON '"+jsonS+"';" 
+        insertSt="INSERT INTO test.tbDocumento_tfjfa JSON '"+jsonS+"';" 
         future = session.execute_async(insertSt)
         future.result()  
         record_added=True
