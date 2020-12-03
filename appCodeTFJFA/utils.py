@@ -79,12 +79,14 @@ def processRows(browser,row,strSearch):
     if lsRes[0]:
         print('Sentencia added:',str(namePDF))
     else:
-        print('Keep going...sentencia existed:',str(namePDF))              
- 
+        print('Keep going...sentencia existed:',str(namePDF))  
+                    
+    """
     for file in os.listdir(download_dir):
         pdfDownloaded=True
         processPDF(json_sentencia,lsRes)
-        os.remove(download_dir+'/'+file)       
+        os.remove(download_dir+'/'+file) 
+    """          
 
     
                     

@@ -16,7 +16,7 @@ def cassandraBDProcess(json_sentencia):
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=timeOut
@@ -58,7 +58,7 @@ def updatePage(page):
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=timeOut
@@ -77,7 +77,7 @@ def getPageAndTopic():
         'secure_connect_bundle':objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=timeOut
@@ -110,7 +110,7 @@ def insertPDF(json_doc):
         'secure_connect_bundle': objCC.cc_secureBundle
     }
     
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
     session.default_timeout=timeOut
@@ -143,6 +143,6 @@ class CassandraConnection():
     cc_pwd='P@ssw0rd33'
     cc_user_test='test'
     cc_pwd_test='testquart'
-    cc_secureBundle='/app/appCodeTFJFA/secure-connect-dbquart.zip'
+    cc_secureBundle='/app/appCodeTFJFA/secure-connect-dbtest.zip'
         
 
