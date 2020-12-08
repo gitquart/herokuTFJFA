@@ -104,5 +104,9 @@ if status == 200:
         btnNext=browser.find_elements_by_xpath("//*[@id='dtRresul_paginator_top']/span[4]")[0].click()
         time.sleep(5) 
 
+    if startPage>143:
+        print('All pages done, bye!')
+        os.sys.exit(0)     
+
 
 browser.quit()
