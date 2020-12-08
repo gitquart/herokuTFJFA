@@ -99,6 +99,7 @@ if status == 200:
         print('------------------------END--------------------------------------------')
         currentPage=int(browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-pages > span.ui-paginator-page.ui-state-default.ui-corner-all.ui-state-active')[0].text) 
         bd.updatePage(currentPage+1)
+        startPage=currentPage+1
         #Change the page with next
         btnNext=browser.find_elements_by_xpath("//*[@id='dtRresul_paginator_top']/span[4]")[0].click()
         time.sleep(5) 
