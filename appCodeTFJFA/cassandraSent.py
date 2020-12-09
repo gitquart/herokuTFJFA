@@ -5,19 +5,23 @@ from cassandra.query import SimpleStatement
 import os
 
 keyspace='test'
-timeOut=1000              
+timeOut=1000  
+cloud_config= {
+        'secure_connect_bundle':'/app/appCodeTFJFA/secure-connect-dbtest.zip'
+    }
+
+def returnCluster():
+    #Connect to Cassandra
+    objCC=CassandraConnection()
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
+    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+
+    return cluster
+
 def cassandraBDProcess(json_sentencia):
      
     sent_added=False
-
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    cloud_config= {
-        'secure_connect_bundle':objCC.cc_secureBundle
-    }
-    
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=returnCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     row=''
@@ -52,14 +56,7 @@ def cassandraBDProcess(json_sentencia):
 
 def updatePage(page):
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    cloud_config= {
-        'secure_connect_bundle':objCC.cc_secureBundle
-    }
-    
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=returnCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     page=str(page)
@@ -71,14 +68,7 @@ def updatePage(page):
 
 def getPageAndTopic():
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    cloud_config= {
-        'secure_connect_bundle':objCC.cc_secureBundle
-    }
-    
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=returnCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     row=''
@@ -104,14 +94,7 @@ def insertPDF(json_doc):
      
     record_added=False
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    cloud_config= {
-        'secure_connect_bundle': objCC.cc_secureBundle
-    }
-    
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=returnCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
 
@@ -143,6 +126,5 @@ class CassandraConnection():
     cc_pwd='P@ssw0rd33'
     cc_user_test='test'
     cc_pwd_test='testquart'
-    cc_secureBundle='/app/appCodeTFJFA/secure-connect-dbtest.zip'
         
 
