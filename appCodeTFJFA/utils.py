@@ -84,19 +84,19 @@ def processRows(browser,row,strSearch):
     json_sentencia = devuelveJSON('/app/appCodeTFJFA/json_sentencia.json')
     #Start of JSON filled
     json_sentencia['id']=str(uuid.uuid4())
-    json_sentencia['num_exp']=numExp
-    json_sentencia['via_tramit']=viaTram
-    json_sentencia['type_judge']=tipoJuicio
-    json_sentencia['dt_demandfeature']=fechaPres
-    json_sentencia['resolimpugnada']=resolImp
-    json_sentencia['ley_base_res_impug']=leyQueFunda
-    json_sentencia['sentido_sent']=sentDeLaSent
-    json_sentencia['subject']=subject
-    json_sentencia['sub_subject']=sub_subject
-    json_sentencia['region']=region
-    json_sentencia['court_room']=court
-    json_sentencia['title']=title
-    json_sentencia['pdfname']=namePDF
+    json_sentencia['num_exp']=numExp.replace("'"," ")
+    json_sentencia['via_tramit']=viaTram.replace("'"," ")
+    json_sentencia['type_judge']=tipoJuicio.replace("'"," ")
+    json_sentencia['dt_demandfeature']=fechaPres.replace("'"," ")
+    json_sentencia['resolimpugnada']=resolImp.replace("'"," ")
+    json_sentencia['ley_base_res_impug']=leyQueFunda.replace("'"," ")
+    json_sentencia['sentido_sent']=sentDeLaSent.replace("'"," ")
+    json_sentencia['subject']=subject.replace("'"," ")
+    json_sentencia['sub_subject']=sub_subject.replace("'"," ")
+    json_sentencia['region']=region.replace("'"," ")
+    json_sentencia['court_room']=court.replace("'"," ")
+    json_sentencia['title']=title.replace("'"," ")
+    json_sentencia['pdfname']=namePDF.replace("'"," ")
     #Working with the date, this field will deliver:
     #1.Date field,2. StrField and 3.year
     # timestamp accepted for cassandra: 
