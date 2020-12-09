@@ -122,10 +122,12 @@ def processRows(browser,row,strSearch):
         print('Keep going...sentencia existed:',str(namePDF)) 
 
     #First the metadata of document is inserted, then the PDF, hence the PDF must be validated by chunks
+    """
     if pdfDownloaded==True:
         processPDF(json_sentencia)   
         for file in os.listdir(download_dir):
-            os.remove(download_dir+'/'+file)     
+            os.remove(download_dir+'/'+file)  
+    """           
                     
 """
 readPDF is done to read a PDF no matter the content, can be image or UTF-8 text
