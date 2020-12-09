@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 import cassandraSent as bd
-from textwrap import wrap
 import PyPDF2
 import uuid
 import base64
@@ -8,8 +7,17 @@ import time
 import json
 import os
 import sys
+import chromedriver_autoinstaller
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from textwrap import wrap
 
-download_dir = '/app/DownloadTFJFA'
+#Local
+#download_dir='C:\\DownloadsTFJFA'
+
+#Heroku
+download_dir='/app/DownloadsTFJFA'
+
 
 def appendInfoToFile(path,filename,strcontent):
     txtFile=open(path+filename,'a+')
@@ -29,31 +37,65 @@ processRows:
 
 def processRows(browser,row,strSearch):
     pdfDownloaded=False
-    for col in range(1,6):
+    for col in range(1,16):
         if col==2:
-            namePDF=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+            numExp=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==3:
-            dt_date=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+            viaTram=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==4:
-            region=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+            tipoJuicio=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==5:
-            court=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text                    
-
+            fechaPres=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==6:
+            resolImp=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==7:
+            leyQueFunda=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==8:
+            sentDeLaSent=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==9:
+            subject=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==10:
+            sub_subject=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==11:
+            region=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==12:
+            court=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==13:
+            title=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==14:
+            namePDF=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        if col==15:
+            dt_date=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==1:
             #This is the xpath of the link : //*[@id="grdSentencias_ctl00__'+str(row)+'"]/td['+str(col)+']/a
             #This find_element method works!
+            time.sleep(5)
             pdfButton=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0]
             pdfButton.click()
-            time.sleep(20)
+            time.sleep(100)
             #The file is downloaded rare, then just renaming it solves the issue
             for file in os.listdir(download_dir):
+                pdfDownloaded=True
                 os.rename(download_dir+'/'+file,download_dir+'/00000.pdf')
 
-  
-    #Build the json by row            
-    json_sentencia=devuelveJSON('/app/appCodeTFJFA/json_sentencia.json')
+    
+       
+    #Build the json by row               
+    json_sentencia = devuelveJSON('/app/CodeTFJFA/json_sentencia.json')
+    #Start of JSON filled
     json_sentencia['id']=str(uuid.uuid4())
+    json_sentencia['num_exp']=numExp
+    json_sentencia['via_tramit']=viaTram
+    json_sentencia['type_judge']=tipoJuicio
+    json_sentencia['dt_demandfeature']=fechaPres
+    json_sentencia['resolimpugnada']=resolImp
+    json_sentencia['ley_base_res_impug']=leyQueFunda
+    json_sentencia['sentido_sent']=sentDeLaSent
+    json_sentencia['subject']=subject
+    json_sentencia['sub_subject']=sub_subject
+    json_sentencia['region']=region
     json_sentencia['court_room']=court
+    json_sentencia['title']=title
     json_sentencia['pdfname']=namePDF
     #Working with the date, this field will deliver:
     #1.Date field,2. StrField and 3.year
@@ -69,26 +111,21 @@ def processRows(browser,row,strSearch):
     dTime=data[1]
     fullTimeStamp=dYear+'-'+dMonth+'-'+dDay+' '+dTime;
     json_sentencia['year']=int(dYear)
-    json_sentencia['region']=region
     json_sentencia['publication_datetime']=fullTimeStamp
-    json_sentencia['strpublicationdatetime']=fullTimeStamp
-    #Check if a pdf exists  
-
-    #Insert information to cassandra                     
-    lsRes=bd.cassandraBDProcess(json_sentencia) 
-    if lsRes[0]:
-        print('Sentencia added:',str(namePDF))
+    json_sentencia['strpublicationdatetime']=fullTimeStamp                  
+                   
+    #Insert information to cassandra
+    res=bd.cassandraBDProcess(json_sentencia)
+    if res:
+        print('Sentencia added:',str(namePDF))         
     else:
-        print('Keep going...sentencia existed:',str(namePDF))  
-                    
-    """
-    for file in os.listdir(download_dir):
-        pdfDownloaded=True
-        processPDF(json_sentencia,lsRes)
-        os.remove(download_dir+'/'+file) 
-    """          
+        print('Keep going...sentencia existed:',str(namePDF)) 
 
-    
+    #First the metadata of document is inserted, then the PDF, hence the PDF must be validated by chunks
+    if pdfDownloaded==True:
+        processPDF(json_sentencia)   
+        for file in os.listdir(download_dir):
+            os.remove(download_dir+'/'+file)     
                     
 """
 readPDF is done to read a PDF no matter the content, can be image or UTF-8 text
@@ -113,7 +150,7 @@ def getPDFfromBase64(bContent):
     #Tutorial : https://base64.guru/developers/python/examples/decode-pdf
     bytes = base64.b64decode(bContent, validate=True)
     # Write the PDF contents to a local file
-    f = open(download_dir+'/result.pdf', 'wb')
+    f = open(download_dir+'\\result.pdf', 'wb')
     f.write(bytes)
     f.close()
     return "PDF delivered!"
@@ -134,7 +171,7 @@ def devuelveJSON(jsonFile):
     
     return jsonObj 
 
-def processPDF(json_sentencia,lsRes):
+def processPDF(json_sentencia):
     lsContent=[]  
     for file in os.listdir(download_dir): 
         strFile=file.split('.')[1]
@@ -142,54 +179,32 @@ def processPDF(json_sentencia,lsRes):
             strContent=readPDF(file) 
             print('Start wrapping text...') 
             lsContent=wrap(strContent,1000)  
-            json_documento=devuelveJSON('/app/appCodeTFJFA/json_documento.json')
-            if lsRes[0]:
-                json_documento['idDocumento']=json_sentencia['id']
-            else:
-                json_documento['idDocumento']=lsRes[1]
-
+            json_documento=devuelveJSON('json_documento.json')
+            json_documento['idDocumento']=json_sentencia['id']
             json_documento['documento']=json_sentencia['pdfname']
             json_documento['fuente']='tfjfa'
             totalElements=len(lsContent)
-            result=insertPDFChunks(0,0,0,totalElements,lsContent,json_documento,0)
-            if result==False:
-                print('PDF Ended!')       
+            insertPDFChunks(0,0,0,totalElements,lsContent,json_documento)       
            
         
-def insertPDFChunks(startPos,contador,secuencia,totalElements,lsContent,json_documento,done):
-    if done==0:
-        json_documento['lspdfcontent'].clear()
-        json_documento['id']=str(uuid.uuid4())
-        for i in range(startPos,totalElements):
-            if i!=totalElements-1:
-                if contador<=20:
-                    json_documento['lspdfcontent'].append(lsContent[i])
-                    contador=contador+1
-                else:
-                    currentSeq=secuencia+1
-                    json_documento['secuencia']=currentSeq
-                    res=bd.insertPDF(json_documento) 
-                    if res:
-                        print('Chunk of pdf added:',str(i),'from ',str(totalElements),' sequence:',str(currentSeq))  
-                    else:
-                        print('Chunk of pdf already existed:',str(i),'from ',str(totalElements),' sequence:',str(currentSeq)) 
+def insertPDFChunks(startPos,contador,secuencia,totalElements,lsContent,json_documento):
+    json_documento['lspdfcontent'].clear()
+    json_documento['id']=str(uuid.uuid4())
+    for i in range(startPos,totalElements):
+        if contador<=20:
+            json_documento['lspdfcontent'].append(lsContent[i])
+            contador=contador+1
+        else:
+            currentSeq=secuencia=secuencia+1
+            json_documento['secuencia']=currentSeq
+            res=bd.insertPDF(json_documento) 
+            if res:
+                print('Chunk of pdf added')  
+            insertPDFChunks(i,0,currentSeq,totalElements,lsContent,json_documento) 
+    print('PDF COMPLETE')         
+       
+                    
 
-                    return insertPDFChunks(i,0,currentSeq,totalElements,lsContent,json_documento,0) 
-            else:
-                json_documento['lspdfcontent'].append(lsContent[i])
-                currentSeq=secuencia+1
-                json_documento['secuencia']=currentSeq
-                res=bd.insertPDF(json_documento) 
-                if res:
-                    print('Last Chunk of pdf added:',str(i),'from ',str(totalElements),' sequence:',str(currentSeq))
-                else:
-                    print('Last Chunk of pdf already existed:',str(i),'from ',str(totalElements),' sequence:',str(currentSeq))
-
-                return  insertPDFChunks(i,0,currentSeq,totalElements,lsContent,json_documento,1)
-    else:
-        return False            
-
-                             
 def readPyPDF(file):
     #This procedure produces a b'blabla' string, it has UTF-8
     #PDF files are stored as bytes. Therefore to read or write a PDF file you need to use rb or wb.
@@ -205,4 +220,55 @@ def readPyPDF(file):
         lsContent.append(str(bcontent.decode('utf-8')))
                          
     pdfFileObj.close()    
-    return lsContent
+    return lsContent 
+
+def returnChromeSettings():
+    chromedriver_autoinstaller.install()
+    options = Options()
+    profile = {"plugins.plugins_list": [{"enabled": True, "name": "Chrome PDF Viewer"}], # Disable Chrome's PDF Viewer
+               "download.default_directory": download_dir , 
+               "download.prompt_for_download": False,
+               "download.directory_upgrade": True,
+               "download.extensions_to_open": "applications/pdf",
+               "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
+               }           
+
+    options.add_experimental_option("prefs", profile)
+    browser=webdriver.Chrome(options=options)  
+
+    return browser    
+
+def initialDownloadDirCheck():
+    print('Checking if download folder exists...')
+    isdir = os.path.isdir(download_dir)
+    if isdir==False:
+        print('Creating download folder...')
+        os.mkdir(download_dir)
+        print('Download directory created...')
+    for file in os.listdir(download_dir):
+        os.remove(download_dir+'/'+file)
+        print('Download folder empty...')   
+
+def devuelveElemento(xPath, browser):
+    cEle=0
+    while (cEle==0):
+        cEle=len(browser.find_elements_by_xpath(xPath))
+        if cEle>0:
+            ele=browser.find_elements_by_xpath(xPath)[0]
+
+    return ele  
+
+def checkAllFields(browser):
+    for col in range(1,4):
+        if col!=2:
+            for row in range(1,8):
+                if (col==1 and row==6) or (col==1 and row==7) or (col==3 and row==5) or (col==3 and row==7):
+                    pass    
+                else:
+                    ckCol=devuelveElemento('//*[@id="formCheckBox:gridColCheck"]/tbody/tr['+str(row)+']/td['+str(col)+']/div/div[2]/span',browser)
+                    ckCol.click()                  
+
+
+    
+                               
+                                         

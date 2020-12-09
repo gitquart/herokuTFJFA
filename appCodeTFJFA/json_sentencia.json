@@ -1,9 +1,21 @@
 {
   "id":"",
+  "num_exp":"",
+  "via_tramit":"",
+  "type_judge":"",
+  "dt_demandfeature":"",
+  "resolimpugnada":"",
+  "ley_base_res_impug":"",
+  "sentido_sent":"",
+  "subject":"",
+  "sub_subject":"",
+  "region":"",
   "court_room": "",
+  "title":"",
   "pdfname":"",
   "publication_datetime":"",
   "strpublicationdatetime":"",
-  "year":0,
-  "region":""
+  "year":0
+  
+  
 }
