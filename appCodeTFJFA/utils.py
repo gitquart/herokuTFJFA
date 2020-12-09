@@ -81,7 +81,7 @@ def processRows(browser,row,strSearch):
     
        
     #Build the json by row               
-    json_sentencia = devuelveJSON('/app/CodeTFJFA/json_sentencia.json')
+    json_sentencia = devuelveJSON('/app/appCodeTFJFA/json_sentencia.json')
     #Start of JSON filled
     json_sentencia['id']=str(uuid.uuid4())
     json_sentencia['num_exp']=numExp
