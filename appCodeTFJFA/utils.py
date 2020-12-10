@@ -115,8 +115,9 @@ def processRows(browser,row,strSearch):
     json_sentencia['strpublicationdatetime']=fullTimeStamp                  
                    
     #Insert information to cassandra
-    res=bd.cassandraBDProcess(json_sentencia)
-    if res:
+    lsRes=bd.cassandraBDProcess(json_sentencia)
+
+    if lsRes[0]:
         print('Sentencia added:',str(namePDF))         
     else:
         print('Keep going...sentencia existed:',str(namePDF)) 
