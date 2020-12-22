@@ -51,7 +51,7 @@ processRows:
 //*[@id="dtRresul_data"]/tr[1]/td[5]
 """
 
-def processRows(browser,row,strSearch):
+def processRows(browser,row):
     pdfDownloaded=False
     for col in range(1,16):
         if col==2:
