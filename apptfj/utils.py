@@ -277,6 +277,15 @@ def devuelveElemento(xPath, browser):
 
     return ele  
 
+def devuelveListaElementos(xPath, browser):
+    cEle=0
+    while (cEle==0):
+        cEle=len(browser.find_elements_by_xpath(xPath))
+        if cEle>0:
+            ele=browser.find_elements_by_xpath(xPath)
+
+    return ele      
+
 def checkAllFields(browser):
     for col in range(1,4):
         if col!=2:
