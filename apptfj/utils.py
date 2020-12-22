@@ -82,6 +82,7 @@ def processRows(browser,row,strSearch):
             namePDF=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==15:
             dt_date=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
+        """
         if col==1:
             #This is the xpath of the link : //*[@id="grdSentencias_ctl00__'+str(row)+'"]/td['+str(col)+']/a
             #This find_element method works!
@@ -93,6 +94,7 @@ def processRows(browser,row,strSearch):
             for file in os.listdir(download_dir):
                 pdfDownloaded=True
                 os.rename(download_dir+'/'+file,download_dir+'/00000.pdf')
+        """        
 
     
        
