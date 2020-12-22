@@ -157,6 +157,7 @@ if status==200:
         dateval=strMonth+'/'+strYear
         st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where  id_control="+str(idControl)+";"
         bd.executeStatement(st)
+        print('------------No results-------------')
         os.sys.exit(0)    
       
 
