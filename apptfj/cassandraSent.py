@@ -3,11 +3,14 @@ from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.query import SimpleStatement
 import os
+from InternalControl import cInternalControl
+
+objControl=cInternalControl()
 
 keyspace='test'
-timeOut=1000  
+timeOut=objControl.timeout  
 cloud_config= {
-        'secure_connect_bundle':'/app/appCodeTFJFA/secure-connect-dbtest.zip'
+        'secure_connect_bundle':objControl.hfolder+'secure-connect-dbtest.zip'
     }
 
 def returnCluster():
@@ -54,41 +57,28 @@ def cassandraBDProcess(json_sentencia):
                          
     return lsRes
 
-def updatePage(page):
+def executeStatement(st):
 
     cluster=returnCluster()
     session = cluster.connect()
-    session.default_timeout=timeOut
-    page=str(page)
-    querySt="update "+keyspace+".cjf_control set page="+page+" where  id_control=2;"          
-    future = session.execute_async(querySt)
+    session.default_timeout=timeOut        
+    future = session.execute_async(st)
     future.result()
+    cluster.shutdown()
                          
     return True
 
-def getPageAndTopic():
+def getQuery(query):    
 
     cluster=returnCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     row=''
-    #select page from  thesis.cjf_control where id_control=1 and query='Primer circuito'
-    querySt="select query,page from "+keyspace+".cjf_control where id_control=2  ALLOW FILTERING"
-                
-    future = session.execute_async(querySt)
+    future = session.execute_async(query)
     row=future.result()
-    lsInfo=[]
-        
-    if row: 
-        for val in row:
-            lsInfo.append(str(val[0]))
-            lsInfo.append(str(val[1]))
-            print('Value from cassandra:',str(val[0]))
-            print('Value from cassandra:',str(val[1]))
-        cluster.shutdown()
-                    
-                         
-    return lsInfo    
+    cluster.shutdown()
+                   
+    return row  
 
 def insertPDF(json_doc):
      

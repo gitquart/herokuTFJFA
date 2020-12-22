@@ -11,12 +11,28 @@ import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from textwrap import wrap
+import calendar
+from InternalControl import cInternalControl
 
 #Local
 #download_dir='C:\\DownloadsTFJFA'
 
 #Heroku
-download_dir='/app/DownloadsTFJFA'
+objControl=cInternalControl()
+download_dir=objControl.download_dir
+
+def getDatesForSearch(strDate):
+    #mm/yyyy
+    chunks=strDate.split('/')
+    month=chunks[0]
+    year=chunks[1]
+    fw,days=calendar.monthrange(int(year),int(month))
+    lsDates=[]
+    lsDates.append('01/'+month+'/'+year)
+    lsDates.append(str(days)+'/'+month+'/'+year)
+
+    return lsDates
+
 
 
 def appendInfoToFile(path,filename,strcontent):
@@ -81,7 +97,7 @@ def processRows(browser,row,strSearch):
     
        
     #Build the json by row               
-    json_sentencia = devuelveJSON('/app/appCodeTFJFA/json_sentencia.json')
+    json_sentencia = devuelveJSON('json_sentencia.json')
     #Start of JSON filled
     json_sentencia['id']=str(uuid.uuid4())
     json_sentencia['num_exp']=numExp.replace("'"," ")
@@ -169,7 +185,7 @@ def TextOrImageFromBase64(bContent):
     return res 
 
 def devuelveJSON(jsonFile):
-    with open(jsonFile) as json_file:
+    with open(objControl.hfolder+jsonFile) as json_file:
         jsonObj = json.load(json_file)
     
     return jsonObj 

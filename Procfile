@@ -1,1 +1,1 @@
-worker: python3 /app/appCodeTFJFA/main.py
+worker: python3 /app/apptfj/main.py
