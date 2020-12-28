@@ -299,7 +299,27 @@ def checkAllFields(browser):
                     pass    
                 else:
                     ckCol=devuelveElemento('//*[@id="formCheckBox:gridColCheck"]/tbody/tr['+str(row)+']/td['+str(col)+']/div/div[2]/span',browser)
-                    ckCol.click()                  
+                    ckCol.click() 
+
+def prepareNextQuery(strdates): 
+    print('All pages done, bye!...Heroku will turn me on again')
+    #strdates = 11/1997 for example
+    chunks=strdates.split('/')
+    month=int(chunks[0])
+    year=int(chunks[1])
+    #Case if month is december
+    if month==12:
+        year+=1
+        month=1
+    else:
+        month+=1    
+            
+    strMonth=str(month).zfill(2)
+    strYear=str(year)
+    dateval=strMonth+'/'+strYear
+    st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where id_control="+str(objControl.idControl)+";"
+    bd.executeStatement(st)
+    os.sys.exit(0)                                           
 
 
     

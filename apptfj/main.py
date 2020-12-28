@@ -88,25 +88,7 @@ if status==200:
             if res:
                 btnNext.click()
             else:
-                print('Click button is not enabled...then query is over, bye...')  
-                print('All pages done, bye!...Heroku will turn me on again')
-                #strdates = 11/1997 for example
-                chunks=strdates.split('/')
-                month=int(chunks[0])
-                year=int(chunks[1])
-                #Case if month is december
-                if month==12:
-                    year+=1
-                    month=1
-                else:
-                    month+=1    
-            
-                strMonth=str(month).zfill(2)
-                strYear=str(year)
-                dateval=strMonth+'/'+strYear
-                st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where id_control="+str(idControl)+";"
-                bd.executeStatement(st)
-                os.sys.exit(0)      
+                tool.prepareNextQuery(strdates)
     
     print('Start reading the page...')
     #Control the page
@@ -138,24 +120,7 @@ if status==200:
         btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
         res=btnNext.is_enabled()
         if res==False:
-            print('All pages done, bye!...Heroku will turn me on again')
-            #strdates = 11/1997 for example
-            chunks=strdates.split('/')
-            month=int(chunks[0])
-            year=int(chunks[1])
-            #Case if month is december
-            if month==12:
-                year+=1
-                month=1
-            else:
-                month+=1    
-            
-            strMonth=str(month).zfill(2)
-            strYear=str(year)
-            dateval=strMonth+'/'+strYear
-            st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where id_control="+str(idControl)+";"
-            bd.executeStatement(st)
-            os.sys.exit(0)    
+            tool.prepareNextQuery(strdates)
         else:    
             btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
             btnNext.click()
