@@ -82,19 +82,22 @@ def processRows(browser,row):
             namePDF=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
         if col==15:
             dt_date=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0].text
-        """
-        if col==1:
-            #This is the xpath of the link : //*[@id="grdSentencias_ctl00__'+str(row)+'"]/td['+str(col)+']/a
-            #This find_element method works!
-            time.sleep(5)
-            pdfButton=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0]
-            pdfButton.click()
-            time.sleep(100)
-            #The file is downloaded rare, then just renaming it solves the issue
-            for file in os.listdir(download_dir):
-                pdfDownloaded=True
-                os.rename(download_dir+'/'+file,download_dir+'/00000.pdf')
-        """        
+        
+        if (objControl.pdfOn):
+            if col==1:
+                #This is the xpath of the link : //*[@id="grdSentencias_ctl00__'+str(row)+'"]/td['+str(col)+']/a
+                #This find_element method works!
+                time.sleep(5)
+                pdfButton=browser.find_elements_by_xpath('//*[@id="dtRresul_data"]/tr['+str(row)+']/td['+str(col)+']')[0]
+                pdfButton.click()
+                time.sleep(100)
+                #The file is downloaded rare, then just renaming it solves the issue
+                for file in os.listdir(download_dir):
+                    pdfDownloaded=True
+                    os.rename(download_dir+'/'+file,download_dir+'/00000.pdf')
+            else:
+                print('The pdf process are turned off now...')        
+               
 
     
        
@@ -141,12 +144,12 @@ def processRows(browser,row):
         print('Keep going...sentencia existed:',str(namePDF)) 
 
     #First the metadata of document is inserted, then the PDF, hence the PDF must be validated by chunks
-    """
-    if pdfDownloaded==True:
-        processPDF(json_sentencia)   
-        for file in os.listdir(download_dir):
-            os.remove(download_dir+'/'+file)  
-    """           
+    if (objControl.pdfOn):
+        if pdfDownloaded==True:
+            processPDF(json_sentencia)   
+            for file in os.listdir(download_dir):
+                os.remove(download_dir+'/'+file)  
+              
                     
 """
 readPDF is done to read a PDF no matter the content, can be image or UTF-8 text

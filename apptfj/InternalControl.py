@@ -3,3 +3,4 @@ class cInternalControl:
     timeout=70
     hfolder='/app/apptfj/'     
     download_dir='/app/DownloadsTFJFA'
+    pdfOn=False
