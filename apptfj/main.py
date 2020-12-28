@@ -84,8 +84,8 @@ if status==200:
     if startPage>1:
         for x in range(1,startPage):
             btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            att_active=btnNext.get_attribute("active")
-            if att_active is not None:
+            res=btnNext.is_enabled()
+            if res:
                 btnNext.click()
     
     print('Start reading the page...')
@@ -116,8 +116,8 @@ if status==200:
         bd.executeStatement(st)
         #Change the page with next
         btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-        att_active=btnNext.get_attribute("active")
-        if att_active is None:
+        res=btnNext.is_enabled()
+        if res==False:
             print('All pages done, bye!...Heroku will turn me on again')
             #strdates = 11/1997 for example
             chunks=strdates.split('/')
