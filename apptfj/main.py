@@ -85,14 +85,12 @@ if status==200:
         print('More than 1 page, checking if next btn is enabled...')
         for x in range(1,startPage):
             btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            res=btnNext.is_enabled()
-            if res:
-                print('Btn next is enabled...')
-                btnNext.click()
-            else:
-                print('Btn next is NOT enabled, preparing next query...')
-                tool.prepareNextQuery(strdates)
-    
+            btnNext.click()
+            
+            """
+            print('Btn next is NOT enabled, preparing next query...')
+            tool.prepareNextQuery(strdates)
+            """
     print('Start reading the page...')
     #Control the page
     #Page identention
