@@ -117,14 +117,8 @@ if status==200:
         st="update test.cjf_control set page="+str(nPage)+" where  id_control="+str(idControl)+";"  
         bd.executeStatement(st)
         #Change the page with next
-        btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-        res=btnNext.is_enabled()
-        if res==False:
-            tool.prepareNextQuery(strdates)
-        else:    
-            btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            btnNext.click()
-            time.sleep(5) 
+        print('Page well done...')
+        os.sys.exit(0)
     else:
         #No results for this date search
         chunks=strdates.split('/')
