@@ -92,7 +92,9 @@ if status==200:
             for x in range(1,startPage):
                 btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
                 btnNext.click()
-            
+
+    print('Waiting a bit just to let the page get up well...')
+    time.sleep(5)        
     print('Start reading the page...')
     #Control the page
     #Page identention
