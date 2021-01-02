@@ -85,6 +85,7 @@ if status==200:
         print('More than 1 page, checking if next btn is enabled...')
         btnNextSelector=browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-next.ui-state-default.ui-corner-all.ui-state-disabled')
         lsCount=len(btnNextSelector)
+        print('Value of btnNext count:',str(lsCount))
         if lsCount>0:
             print('Btn next is NOT enabled, preparing next query...')
             tool.prepareNextQuery(strdates)
