@@ -119,12 +119,20 @@ if status==200:
         print('Count of Rows:',str(countRow)) 
         #Update the info in file
         print('Page already done:...',str(startPage)) 
-        nPage=startPage+1
-        st="update test.cjf_control set page="+str(nPage)+" where  id_control="+str(idControl)+";"  
-        bd.executeStatement(st)
-        #Change the page with next
-        print('Page well done...')
-        os.sys.exit(0)
+        #Check if the btnNext is enabled or not
+        btnNextSelector=browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-next.ui-state-default.ui-corner-all.ui-state-disabled')
+        lsCount=len(btnNextSelector)
+        print('End of page, cheking if btnNext is enabled or Not')
+        if lsCount>0:
+            print('Btn next is NOT enabled, preparing next query...')
+            tool.prepareNextQuery(strdates)
+        else:    
+            nPage=startPage+1
+            st="update test.cjf_control set page="+str(nPage)+" where  id_control="+str(idControl)+";"  
+            bd.executeStatement(st)
+            #Change the page with next
+            print('Page well done...')
+            os.sys.exit(0)
     else:
         #No results for this date search
         chunks=strdates.split('/')
