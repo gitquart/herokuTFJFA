@@ -83,13 +83,9 @@ if status==200:
     #Mechanism to change to current page
     if startPage>1:
         for x in range(1,startPage):
-            btnNext=tool.devuelveListaElementos("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            countBtnNext=len(btnNext)
-            if countBtnNext>0:
-                btnNext[0].click()
-            else:
-                print('The page has no btn NEXT clickable')    
-
+            btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
+            btnNext.click()
+            
     print('Waiting a bit just to let the page get up well...')
     time.sleep(5)        
     print('Start reading the page...')
