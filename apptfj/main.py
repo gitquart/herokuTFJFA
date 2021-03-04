@@ -87,6 +87,7 @@ if status==200:
             try:
                 btnNext.click()
             except:
+                #Case: When the next button doesn't work, it means there is no more pages
                 print('Btn click is not available (click does not work), setting next query...')    
                 #No results for this date search
                 chunks=strdates.split('/')
