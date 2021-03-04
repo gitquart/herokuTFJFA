@@ -84,7 +84,26 @@ if status==200:
     if startPage>1:
         for x in range(1,startPage):
             btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            btnNext.click()
+            try:
+                btnNext.click()
+            except:
+                print('Btn click is not available (click does not work), setting next query...')    
+                #No results for this date search
+                chunks=strdates.split('/')
+                month=int(chunks[0])
+                year=int(chunks[1])
+                #Case if month is december
+                if month==12:
+                    year+=1
+                    month=1
+                else:
+                    month+=1     
+                strMonth=str(month).zfill(2)
+                strYear=str(year)
+                dateval=strMonth+'/'+strYear
+                st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where  id_control="+str(idControl)+";"
+                bd.executeStatement(st)
+                os.sys.exit(0)    
             
     print('Waiting a bit just to let the page get up well...')
     time.sleep(5)        
