@@ -331,7 +331,6 @@ def checkAllFields(browser):
                     ckCol.click() 
 
 def prepareNextQuery(strdates): 
-    print('All pages done, bye!...Heroku will turn me on again')
     #strdates = 11/1997 for example
     chunks=strdates.split('/')
     month=int(chunks[0])
@@ -348,7 +347,9 @@ def prepareNextQuery(strdates):
     dateval=strMonth+'/'+strYear
     st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where id_control="+str(objControl.idControl)+";"
     bd.executeStatement(st)
-    os.sys.exit(0)                                           
+    os.sys.exit(0) 
+
+                        
 
 
     

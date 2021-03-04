@@ -90,21 +90,7 @@ if status==200:
                 #Case: When the next button doesn't work, it means there is no more pages
                 print('Btn click is not available (click does not work), setting next query...')    
                 #No results for this date search
-                chunks=strdates.split('/')
-                month=int(chunks[0])
-                year=int(chunks[1])
-                #Case if month is december
-                if month==12:
-                    year+=1
-                    month=1
-                else:
-                    month+=1     
-                strMonth=str(month).zfill(2)
-                strYear=str(year)
-                dateval=strMonth+'/'+strYear
-                st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where  id_control="+str(idControl)+";"
-                bd.executeStatement(st)
-                os.sys.exit(0)    
+                tool.prepareNextQuery(strdates)
             
     print('Waiting a bit just to let the page get up well...')
     time.sleep(5)        
@@ -137,6 +123,7 @@ if status==200:
         print('End of page, cheking if btnNext is enabled or Not')
         if lsCount>0:
             print('Btn next is NOT enabled, preparing next query...')
+            print('All pages done, bye!...Heroku will turn me on again')
             tool.prepareNextQuery(strdates)
         else:    
             nPage=startPage+1
@@ -147,23 +134,9 @@ if status==200:
             os.sys.exit(0)
     else:
         #No results for this date search
-        chunks=strdates.split('/')
-        month=int(chunks[0])
-        year=int(chunks[1])
-        #Case if month is december
-        if month==12:
-            year+=1
-            month=1
-        else:
-            month+=1    
-            
-        strMonth=str(month).zfill(2)
-        strYear=str(year)
-        dateval=strMonth+'/'+strYear
-        st="update test.cjf_control set page=1,fechaactual='"+str(dateval)+"' where  id_control="+str(idControl)+";"
-        bd.executeStatement(st)
+        tool.prepareNextQuery(strdates)
         print('------------No results-------------')
-        os.sys.exit(0)    
+         
       
 
 browser.quit()
