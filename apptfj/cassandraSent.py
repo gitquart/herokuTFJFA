@@ -6,20 +6,25 @@ import os
 from InternalControl import cInternalControl
 
 objControl=cInternalControl()
-
+idControl=objControl.idControl
+hfolder=objControl.hfolder
 keyspace='test'
 timeOut=objControl.timeout  
-cloud_config= {
-        'secure_connect_bundle':objControl.hfolder+'secure-connect-dbtest.zip'
-    }
 
 def returnCluster():
     #Connect to Cassandra
     objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cloud_config=''
+    if objControl.heroku:
+        cloud_config= {'secure_connect_bundle': objControl.rutaHeroku+'/secure-connect-dbtest.zip'}
+    else:
+        cloud_config= {'secure_connect_bundle': objControl.rutaLocal+'secure-connect-dbtest.zip'}
 
-    return cluster
+
+    auth_provider = PlainTextAuthProvider(objCC.cc_user_test,objCC.cc_pwd_test)
+    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider) 
+
+    return cluster  
 
 def cassandraBDProcess(json_sentencia):
      

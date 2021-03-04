@@ -101,8 +101,11 @@ def processRows(browser,row):
 
     
        
-    #Build the json by row               
-    json_sentencia = devuelveJSON('json_sentencia.json')
+    #Build the json by row  
+    if objControl.heroku:        
+        json_sentencia=devuelveJSON(objControl.rutaHeroku+'/json_sentencia.json')
+    else:
+        json_sentencia=devuelveJSON(objControl.rutaLocal+'json_sentencia.json')             
     #Start of JSON filled
     json_sentencia['id']=str(uuid.uuid4())
     json_sentencia['num_exp']=numExp.replace("'"," ")
@@ -190,7 +193,7 @@ def TextOrImageFromBase64(bContent):
     return res 
 
 def devuelveJSON(jsonFile):
-    with open(objControl.hfolder+jsonFile) as json_file:
+    with open(jsonFile) as json_file:
         jsonObj = json.load(json_file)
     
     return jsonObj 
@@ -247,30 +250,56 @@ def readPyPDF(file):
     return lsContent 
 
 def returnChromeSettings():
+    browser=''
     chromedriver_autoinstaller.install()
-    options = Options()
-    profile = {"plugins.plugins_list": [{"enabled": True, "name": "Chrome PDF Viewer"}], # Disable Chrome's PDF Viewer
-               "download.default_directory": download_dir , 
+    if objControl.heroku:
+        #Chrome configuration for heroku
+        chrome_options= webdriver.ChromeOptions()
+        chrome_options.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
+
+        browser=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
+
+    else:
+        options = Options()
+        profile = {"plugins.plugins_list": [{"enabled": True, "name": "Chrome PDF Viewer"}], # Disable Chrome's PDF Viewer
+               "download.default_directory": objControl.download_dir , 
                "download.prompt_for_download": False,
                "download.directory_upgrade": True,
                "download.extensions_to_open": "applications/pdf",
                "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
                }           
 
-    options.add_experimental_option("prefs", profile)
-    browser=webdriver.Chrome(options=options)  
+        options.add_experimental_option("prefs", profile)
+        browser=webdriver.Chrome(options=options)  
 
-    return browser    
+    
+
+    return browser   
 
 def initialDownloadDirCheck():
     print('Checking if download folder exists...')
-    isdir = os.path.isdir(download_dir)
+    directory_created=''
+    if objControl.heroku:
+        isdir = os.path.isdir(objControl.rutaHeroku+'/'+download_dir)
+        directory_created=objControl.rutaHeroku+'/'+download_dir
+    else:
+        isdir=os.path.isdir('C:\\'+download_dir)
+        directory_created='C:\\'+download_dir   
     if isdir==False:
         print('Creating download folder...')
-        os.mkdir(download_dir)
+        if objControl.heroku:
+            os.mkdir(objControl.rutaHeroku+'/'+download_dir)  
+        else:
+            os.mkdir('C:\\'+download_dir)          
         print('Download directory created...')
-    for file in os.listdir(download_dir):
-        os.remove(download_dir+'/'+file)
+    for file in os.listdir(directory_created):
+        if objControl.heroku:
+            os.remove(directory_created+'/'+file)
+        else:
+            os.remove(directory_created+'\\'+file)
         print('Download folder empty...')   
 
 def devuelveElemento(xPath, browser):
