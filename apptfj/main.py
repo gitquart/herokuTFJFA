@@ -118,6 +118,7 @@ if status==200:
         print('Page already done:...',str(startPage)) 
         #Check if the btnNext is enabled or not
         btnNextSelector=browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-next.ui-state-default.ui-corner-all.ui-state-disabled')
+        time.sleep(2)
         lsCount=len(btnNextSelector)
         print('End of page, cheking if btnNext is enabled or Not')
         if lsCount>0:
