@@ -91,7 +91,7 @@ if status==200:
             #btnNext.click()
             if lsCount>0:
                 btnNextSelector[0].click()
-            print('Button clicked ',str(x),' times')
+                print('Button clicked ',str(x),' times')
            
             
     print('Waiting a bit just to let the page get up well...')
