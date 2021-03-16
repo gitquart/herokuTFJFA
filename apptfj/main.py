@@ -70,10 +70,12 @@ if status==200:
     strdtInit=lsDates[0]
     strdtFin=lsDates[1]
     
+    time.sleep(5)
     #Initial date (dd/mm/yyyy)
     dtInit=tool.devuelveElemento('//*[@id="formBusqueda:fchIni_input"]',browser)
     dtInit.send_keys(strdtInit)
     #Final date
+    time.sleep(5)
     dtFinal=tool.devuelveElemento('//*[@id="formBusqueda:fchFin_input"]',browser)
     dtFinal.send_keys(strdtFin)
     btnBuscar=tool.devuelveElemento('//*[@id="formBusqueda:btnBuscar"]',browser)
@@ -88,9 +90,9 @@ if status==200:
                 btnNext.click()
             except:
                 #Case: When the next button doesn't work, it means there is no more pages
-                print('Btn click is not available (click does not work), setting next query...')    
+                print('Btn click is not available (click does not work)...')    
                 #No results for this date search
-                tool.prepareNextQuery(strdates)
+                os.sys.exit(0)
             
     print('Waiting a bit just to let the page get up well...')
     time.sleep(5)        
@@ -131,6 +133,10 @@ if status==200:
             bd.executeStatement(st)
             #Change the page with next
             print('Page well done...')
+            print('Checking if page is greater than 143...')
+            if nPage>143:
+                print('Page greater than 143...changig query...')
+                tool.prepareNextQuery(strdates)
             os.sys.exit(0)
     else:
         #No results for this date search
