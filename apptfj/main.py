@@ -85,15 +85,14 @@ if status==200:
     #Mechanism to change to current page
     if startPage>1:
         for x in range(1,startPage):
-            btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            try:
-                btnNext.click()
-                print('Button clicked ',str(x),' times')
-            except:
-                #Case: When the next button doesn't work, it means there is no more pages
-                print('Btn click is not available (click does not work)...')    
-                #No results for this date search
-                os.sys.exit(0)
+            btnNextSelector=browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-next.ui-state-default.ui-corner-all.ui-state-disabled')
+            lsCount=len(btnNextSelector)
+            #btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
+            #btnNext.click()
+            if lsCount>0:
+                btnNextSelector[0].click()
+            print('Button clicked ',str(x),' times')
+           
             
     print('Waiting a bit just to let the page get up well...')
     time.sleep(5)        
