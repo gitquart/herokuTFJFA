@@ -88,6 +88,7 @@ if status==200:
             btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
             try:
                 btnNext.click()
+                print('Button clicked ',str(x),' times')
             except:
                 #Case: When the next button doesn't work, it means there is no more pages
                 print('Btn click is not available (click does not work)...')    
