@@ -85,13 +85,10 @@ if status==200:
     #Mechanism to change to current page
     if startPage>1:
         for x in range(1,startPage):
-            btnNextSelector=browser.find_elements_by_css_selector('#dtRresul_paginator_top > span.ui-paginator-next.ui-state-default.ui-corner-all.ui-state-disabled')
-            lsCount=len(btnNextSelector)
-            #btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
-            #btnNext.click()
-            if lsCount>0:
-                btnNextSelector[0].click()
-                print('Button clicked ',str(x),' times')
+            btnNext=tool.devuelveElemento("//*[@id='dtRresul_paginator_top']/span[4]",browser)
+            time.sleep(2)
+            btnNext.click()
+            print('Button clicked ',str(x),' times')
            
             
     print('Waiting a bit just to let the page get up well...')
