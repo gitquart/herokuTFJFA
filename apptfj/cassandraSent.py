@@ -34,9 +34,11 @@ def cassandraBDProcess(json_sentencia):
     session.default_timeout=timeOut
     row=''
     pdfname=json_sentencia['pdfname']
+    pubdate=json_sentencia['publication_datetime']
+    numExp=json_sentencia['num_exp']
     #Check wheter or not the record exists, check by numberFile and date
     #Date in cassandra 2020-09-10T00:00:00.000+0000
-    querySt="select id from "+keyspace+".tbcourtdecisiontfjfa where pdfname='"+str(pdfname)+"'  ALLOW FILTERING"            
+    querySt="select id from "+keyspace+".tbcourtdecisiontfjfa where pdfname='"+str(pdfname)+"' and num_exp='"+str(numExp)+"' and publication_datetime='"+str(pubdate)+"'  ALLOW FILTERING"            
     future = session.execute_async(querySt)
     row=future.result()
     lsRes=[]
