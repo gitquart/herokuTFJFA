@@ -73,10 +73,12 @@ if status==200:
     time.sleep(5)
     #Initial date (dd/mm/yyyy)
     dtInit=tool.devuelveElemento('//*[@id="formBusqueda:fchIni_input"]',browser)
+    time.sleep(2)
     dtInit.send_keys(strdtInit)
     #Final date
     time.sleep(5)
     dtFinal=tool.devuelveElemento('//*[@id="formBusqueda:fchFin_input"]',browser)
+    time.sleep(2)
     dtFinal.send_keys(strdtFin)
     btnBuscar=tool.devuelveElemento('//*[@id="formBusqueda:btnBuscar"]',browser)
     btnBuscar.click()
